@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+      window.localStorage.setItem('access_token', '<%= access_token %>');
+      window.localStorage.setItem('refresh_token', '<%= refresh_token %>');
+      window.localStorage.setItem('expires_in', '<%= expires_in %>');
+
+      window.location = 'http://localhost:2000/';
+    </script>
+</head>
+<body>
+  <span style="padding:2em; font: Helvetica, Arial; font-size: 12px; color: #333">
+  This page should redirect in a few seconds.
+</span>
+</body>
+</html>

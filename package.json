@@ -1,0 +1,43 @@
+{
+  "name": "chefy",
+  "version": "1.0.0",
+  "description": "A utility for codechef users to help create custom challenges/contests to achieve personal goals.",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "babel-jest": "^23.4.2",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^6.0.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "jest": "^23.5.0",
+    "jquery": "^3.3.1",
+    "next": "^6.1.1",
+    "query-string": "^6.1.0",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-redux": "^5.0.7",
+    "react-test-renderer": "^16.4.2",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev": "node server/server.js",
+    "build": "next build",
+    "start": "next start",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ihsavru/Chefy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ihsavru/Chefy/issues"
+  },
+  "homepage": "https://github.com/ihsavru/Chefy#readme"
+}
