@@ -1,16 +1,17 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import App from "./app.js";
-import store from "../stores/index.js";
+import store from "../stores/index";
+import Main from "../components/main_component";
 
-class Index extends React.Component {
+
+class App extends React.Component {
   render() {
     return (
       <Provider store = { store }>
-        <App />
+        <Main/>
       </Provider>
     );
   }
 }
 
-export default Index;
+export default App;
