@@ -1,7 +1,10 @@
 import React from 'react';
-import Auth from "./auth_component"
+import Auth from "./auth";
+import PastChallenges from "./past_challenges";
+import CurrentChallenges from "./current_challenges";
+import Navbar from "./navbar.js";
 import { connect } from 'react-redux';
-import { setTokens } from "../actions/auth_actions";
+import { setTokens, setUser } from "../actions/auth_actions";
 
 class Main extends React.Component {
   componentDidMount() {
@@ -10,6 +13,7 @@ class Main extends React.Component {
       refresh_token: window.localStorage.refresh_token
     };
     this.props.setTokens(tokens);
+    this.props.setUser(tokens);
   }
 
   render() {
@@ -18,7 +22,7 @@ class Main extends React.Component {
     }
     return (
       <div>
-        WELCOME
+        <Navbar />
       </div>
     );
   }
@@ -32,7 +36,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps  = dispatch => {
   return {
-    setTokens: tokens => dispatch(setTokens(tokens))
+    setTokens: tokens => dispatch(setTokens(tokens)),
+    setUser: tokens => dispatch(setUser(tokens))
   }
 }
 

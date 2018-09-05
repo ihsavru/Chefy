@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import store from "../stores/index";
-import Main from "../components/main_component";
+import Main from "../components/main";
 
 
 class App extends React.Component {
