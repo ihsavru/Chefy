@@ -1,16 +1,16 @@
 const express = require('express');
 const querystring = require('querystring');
 const request = require('request');
-
-const Router = express.Router;
 const AppConfig = require('../config/app');
 const AuthConfig = require('../config/auth');
+
+const Router = express.Router;
 
 const redirect_uri = `${AppConfig.HOST}:${process.env.PORT}/auth/callback`;
 const client_id = AuthConfig.CLIENT_ID;
 const client_secret = AuthConfig.CLIENT_SECRET;
 
-let auth = Router();
+const auth = Router();
 /**
  * Generates a random string containing numbers and letters
  * @param  {number} length The length of the string
@@ -28,23 +28,23 @@ const generateRandomString = (length) => {
 
 const stateKey = 'auth_state';
 
-auth.get('/login', function(req, res) {
+auth.get('/login', (req, res) => {
   const state = generateRandomString(16);
   res.cookie(stateKey, state);
 
   // your application requests authorization
   res.redirect(
-    'https://api.codechef.com/oauth/authorize?' +
-    querystring.stringify({
-      response_type: 'code',
-      client_id: client_id,
-      redirect_uri: redirect_uri,
-      state: state
-    })
+    `https://api.codechef.com/oauth/authorize?${
+      querystring.stringify({
+        response_type: 'code',
+        client_id,
+        redirect_uri,
+        state,
+      })}`,
   );
 });
 
-auth.get('/callback', function(req, res) {
+auth.get('/callback', (req, res) => {
   // your application requests refresh and access tokens
   // after checking the state parameter
 
@@ -53,7 +53,7 @@ auth.get('/callback', function(req, res) {
   const storedState = req.cookies ? req.cookies[stateKey] : null;
 
   if (state === null || state !== storedState) {
-    console.log('state mismatch', 'state: ' + state, 'storedState ' + storedState, 'cookies ', req.cookies);
+    console.log('state mismatch', `state: ${state}`, `storedState ${storedState}`, 'cookies ', req.cookies);
     res.render('pages/callback', {
       access_token: null,
       expires_in: null,
@@ -61,69 +61,67 @@ auth.get('/callback', function(req, res) {
   } else {
     res.clearCookie(stateKey);
 
-    var authOptions = {
+    const authOptions = {
       url: 'https://api.codechef.com/oauth/token',
       form: {
-        code: code,
-        redirect_uri: redirect_uri,
+        code,
+        redirect_uri,
         grant_type: 'authorization_code',
-        client_id: client_id,
-        client_secret: client_secret,
+        client_id,
+        client_secret,
       },
       headers: {
-        Authorization: 'Basic ' + new Buffer(client_id + ':' + client_secret).toString('base64')
+        Authorization: `Basic ${new Buffer(`${client_id}:${client_secret}`).toString('base64')}`,
       },
-      json: true
+      json: true,
     };
 
-    request.post(authOptions, function(error, response, body) {
+    request.post(authOptions, (error, response, body) => {
       if (!error && response.statusCode === 200) {
-        const access_token = body.result.data.access_token,
-          refresh_token = body.result.data.refresh_token,
-          expires_in = body.result.data.expires_in;
-        res.render('pages/callback', {
-          access_token: access_token,
-          expires_in: expires_in,
-          refresh_token: refresh_token
+        const access_token = body.result.data.access_token;
+        const refresh_token = body.result.data.refresh_token;
+
+        res.cookie('access_token', access_token, {
+          maxAge: 3600 * 1000
         });
+        res.cookie('refresh_token', refresh_token);
+
+        res.redirect(`${AppConfig.HOST}:${process.env.PORT}`);
       } else {
-        res.render('pages/callback', {
-          access_token: null,
-          expires_in: null,
-          refresh_token: null
-        });
+        console.log(error);
       }
     });
   }
 });
 
-auth.post('/token', function(req, res) {
+auth.post('/token', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  var refreshToken = req.body ? req.body.refresh_token : null;
+  const refreshToken = req.body ? req.body.refresh_token : null;
   if (refreshToken) {
-    var authOptions = {
+    const authOptions = {
       url: 'https://api.codechef.com/oauth/token',
       form: {
         refresh_token: refreshToken,
         grant_type: 'refresh_token',
-        client_id: client_id,
-        client_secret: client_secret,
+        client_id,
+        client_secret,
       },
       headers: {
-        Authorization: 'Basic ' + new Buffer(client_id + ':' + client_secret).toString('base64')
+        Authorization: `Basic ${new Buffer(`${client_id}:${client_secret}`).toString('base64')}`,
       },
-      json: true
+      json: true,
     };
-    request.post(authOptions, function(error, response, body) {
+    request.post(authOptions, (error, response, body) => {
       if (!error && response.statusCode === 200) {
-        var access_token = body.access_token, expires_in = body.expires_in;
+        const access_token = body.access_token; const
+          expires_in = body.expires_in;
 
         res.setHeader('Content-Type', 'application/json');
         res.send(
           JSON.stringify({
-            access_token: access_token,
-            expires_in: expires_in,
-          })
+            access_token,
+            expires_in,
+          }),
         );
       } else {
         res.setHeader('Content-Type', 'application/json');

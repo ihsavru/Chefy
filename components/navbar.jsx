@@ -2,12 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Navbar extends React.Component {
-
-
   render() {
-
     return (
-      <p>hi</p>
+      <p>hi {this.props.fullname}</p>
     );
   }
 }
@@ -19,4 +16,4 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
+export default connect(mapStateToProps, {})(Navbar);

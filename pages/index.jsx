@@ -1,14 +1,14 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import store from "../stores/index";
-import Main from "../components/main";
+import store from '../stores/index';
+import Main from '../components/main';
 
 
 class App extends React.Component {
   render() {
     return (
-      <Provider store = { store }>
-        <Main/>
+      <Provider store={store}>
+        <Main />
       </Provider>
     );
   }

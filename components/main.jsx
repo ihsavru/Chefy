@@ -1,16 +1,17 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 import Auth from "./auth";
 import PastChallenges from "./past_challenges";
-import CurrentChallenges from "./current_challenges";
-import Navbar from "./navbar.js";
+import CurrentChallenges from "./current_challenges.jsx";
+import Navbar from "./navbar.jsx";
 import { connect } from 'react-redux';
 import { setTokens, setUser } from "../actions/auth_actions";
 
 class Main extends React.Component {
   componentDidMount() {
     const tokens = {
-      access_token: window.localStorage.access_token,
-      refresh_token: window.localStorage.refresh_token
+      access_token: Cookies.get('access_token'),
+      refresh_token: Cookies.get('refresh_token')
     };
     this.props.setTokens(tokens);
     this.props.setUser(tokens);
@@ -23,6 +24,7 @@ class Main extends React.Component {
     return (
       <div>
         <Navbar />
+        <CurrentChallenges/>
       </div>
     );
   }

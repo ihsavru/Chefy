@@ -6,8 +6,12 @@ class CreateChallenge extends React.Component {
     return (
       <div>
         <h1>Create challenge</h1>
-        <input type="text" name="challenge_title"/>
-        <input type="text" name="challenge_title-days"/>:<input type="text" name="challenge_title-hours" />:<input type="text" name="challenge_title-minutes" />
+        <input type="text" name="challenge_title" />
+        <input type="text" name="challenge_title-days" />
+:
+        <input type="text" name="challenge_title-hours" />
+:
+        <input type="text" name="challenge_title-minutes" />
       </div>
     );
   }

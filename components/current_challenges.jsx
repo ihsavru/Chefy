@@ -6,7 +6,7 @@ class CurrentChallenges extends React.Component {
     return (
       <div>
         <h1>Current Challenges</h1>
-        <a href="/create">Create</a>
+        <a href="/create_challenge">Create</a>
       </div>
     );
   }
