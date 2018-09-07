@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Link from 'next/link';
 
 class CreateChallenge extends React.Component {
   render() {
@@ -12,9 +13,12 @@ class CreateChallenge extends React.Component {
         <input type="text" name="challenge_title-hours" />
 :
         <input type="text" name="challenge_title-minutes" />
+        <Link href='/search_problem'>
+          <a>Add Problem</a>
+        </Link>
       </div>
     );
   }
 }
 
-export default CreateChallenge;
+export default connect()(CreateChallenge);

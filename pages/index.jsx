@@ -1,17 +1,15 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import store from '../stores/index';
-import Main from '../components/main';
+import { connect } from 'react-redux';
+import Layout from '../components/layout';
+import CurrentChallenges from "../components/current_challenges";
 
 
 class App extends React.Component {
   render() {
     return (
-      <Provider store={store}>
-        <Main />
-      </Provider>
+      <CurrentChallenges/>
     );
   }
 }
 
-export default App;
+export default connect()(App);

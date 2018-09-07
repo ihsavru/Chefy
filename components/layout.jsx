@@ -1,13 +1,11 @@
-import React from 'react';
-import Cookies from 'js-cookie';
-import Auth from "./auth";
-import PastChallenges from "./past_challenges";
-import CurrentChallenges from "./current_challenges.jsx";
-import Navbar from "./navbar.jsx";
+import React from "react";
 import { connect } from 'react-redux';
-import { setTokens, setUser } from "../actions/auth_actions";
+import Navbar from './navbar';
+import Cookies from "js-cookie";
+import Auth from "./auth";
+import {setTokens, setUser} from "../actions/auth_actions";
 
-class Main extends React.Component {
+class Layout extends React.Component {
   componentDidMount() {
     const tokens = {
       access_token: Cookies.get('access_token'),
@@ -24,7 +22,7 @@ class Main extends React.Component {
     return (
       <div>
         <Navbar />
-        <CurrentChallenges/>
+        {this.props.children}
       </div>
     );
   }
@@ -41,6 +39,6 @@ const mapDispatchToProps  = dispatch => {
     setTokens: tokens => dispatch(setTokens(tokens)),
     setUser: tokens => dispatch(setUser(tokens))
   }
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);
