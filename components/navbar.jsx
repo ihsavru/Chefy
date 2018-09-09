@@ -1,15 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Link from 'next/link';
+import navbarStyle from '../styles/navbar';
 
 class Navbar extends React.Component {
   render() {
     return (
-      <div>
-        <p>hi {this.props.user.fullname}</p>
-        <Link href='/'>
-          <a>Home</a>
-        </Link>
+      <div className='navbar'>
+        <div className='navbar-left'>
+          <span>CHEFY</span>
+        </div>
+        <div className='navbar-right'>
+          <span>{this.props.user.fullname}</span>
+        </div>
+        <style jsx>{ navbarStyle }</style>
       </div>
     );
   }
