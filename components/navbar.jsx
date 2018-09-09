@@ -1,19 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Link from 'next/link';
 
 class Navbar extends React.Component {
   render() {
     return (
-      <p>hi {this.props.fullname}</p>
+      <div>
+        <p>hi {this.props.user.fullname}</p>
+        <Link href='/'>
+          <a>Home</a>
+        </Link>
+      </div>
     );
   }
 }
 
 const mapStateToProps = state => {
   return {
-    fullname: state.auth.fullname,
-    username: state.auth.username,
-  }
+    user: state.auth.user,
+  };
 };
 
-export default connect(mapStateToProps, {})(Navbar);
+export default connect(mapStateToProps)(Navbar);

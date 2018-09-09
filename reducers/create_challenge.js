@@ -1,19 +1,56 @@
-import { SET_PROBLEMS } from '../constants';
 import _ from 'lodash';
+import {
+  GET_PROBLEMS_BY_CATEGORY,
+  GET_PROBLEMS_BY_CODE,
+  ADD_PROBLEM,
+  REMOVE_PROBLEM,
+  UPDATE_CHALLENGE_NAME,
+  CREATE_CHALLENGE,
+} from '../constants';
 
 const initialState = {
-  problemList: []
+  problemList: [],
+  contest: {
+    problems: [],
+  },
 };
 
 const challenges = (state = initialState, action) => {
-  switch(action.type) {
-    case SET_PROBLEMS: {
-      let newState = {...state};
-      newState.problemList[0] = action.payload.result.data.content;
+  const newState = { ...state };
+  switch (action.type) {
+    case GET_PROBLEMS_BY_CODE: {
+      newState.problemList = [action.payload.result.data.content];
+      return newState;
+    }
+    case GET_PROBLEMS_BY_CATEGORY: {
+      newState.problemList = _.cloneDeep(action.payload.result.data.content);
+      return newState;
+    }
+    case ADD_PROBLEM: {
+      const newProblems = _.concat(newState.contest.problems, action.payload);
+      newState.contest = {
+        ...newState.contest,
+        problems: newProblems,
+      };
+      return newState;
+    }
+    case REMOVE_PROBLEM: {
+      const newProblems = _.without(newState.contest.problems, action.payload);
+      newState.contest = {
+        ...newState.contest,
+        problems: newProblems,
+      };
+      return newState;
+    }
+    case UPDATE_CHALLENGE_NAME: {
+      newState.contest = {
+        ...newState.contest,
+        name: action.payload,
+      };
       return newState;
     }
     default:
-      return state;
+      return newState;
   }
 };
 

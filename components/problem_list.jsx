@@ -1,12 +1,23 @@
 import React from "react";
-import { connect } from 'react-redux';
 
 class ProblemList extends React.Component {
   render() {
+    let buttonName;
+    if (this.props.mode === 'add_problem') {
+      buttonName = 'Add';
+    }
+    else if (this.props.mode === 'remove_problem') {
+      buttonName = 'Remove';
+    }
     let problems;
     if (this.props.problems) {
       problems = this.props.problems.map(problem => {
-        return (<div>{problem.problemName}</div>);
+        return (
+          <div>
+            <div key={problem.problemCode}>{problem.problemName}</div>
+            <button onClick={() => this.props.onClick(problem)}>{buttonName}</button>
+          </div>
+        );
       });
     }
     return (

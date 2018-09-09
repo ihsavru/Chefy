@@ -7,6 +7,7 @@ const next = require('next');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const auth = require('./auth');
+const firebaseDB = require('./firebaseDB');
 
 const port = parseInt(process.env.PORT, 10) || 2000;
 const dev = process.env.NODE_ENV !== 'production';
@@ -29,6 +30,8 @@ app.prepare()
     );
 
     server.use('/auth', auth);
+
+    server.use('/firebase', firebaseDB);
 
     server.get('*', (req, res) => handle(req, res));
 
