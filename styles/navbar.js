@@ -13,8 +13,10 @@ const navbarStyle = css`
     text-align: left;
   }
    
-  .navbar-left span {
+  .navbar-left a {
     font-size: 28px;
+    text-decoration: none;
+    color: #fff;
   }
   
   .navbar-right {

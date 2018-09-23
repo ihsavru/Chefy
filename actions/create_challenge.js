@@ -1,12 +1,14 @@
 import fetch from 'cross-fetch';
 import Cookies from 'js-cookie';
+import { setCurrentChallenges } from './current_challenges';
+
 import {
   API_FAIL,
   GET_PROBLEMS_BY_CODE,
   GET_PROBLEMS_BY_CATEGORY,
   ADD_PROBLEM, REMOVE_PROBLEM,
   UPDATE_CHALLENGE_NAME,
-  ADDED_CHALLENGE,
+  CREATE_CHALLENGE,
 } from '../constants';
 
 const fetchProblemByCode = (contestCode, problemCode) => {
@@ -91,6 +93,7 @@ const postChallenge = (challenge, username) => {
 export const createChallenge = (challenge, username) => (dispatch) => {
   postChallenge(challenge, username)
     .then(dispatch({
-      type: ADDED_CHALLENGE,
-    }));
+      type: CREATE_CHALLENGE,
+    }))
+    .then(setCurrentChallenges(username));
 };

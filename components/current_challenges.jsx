@@ -1,27 +1,43 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Link from 'next/link';
+import currentChallengesStyle from '../styles/current_challenges';
+import { setCurrentChallenges } from '../actions/current_challenges';
+import ChallengeList from './challenge_list';
 
 class CurrentChallenges extends React.Component {
+  componentDidMount() {
+    this.props.setCurrentChallenges(this.props.user.username);
+  }
+
+  componentDidUpdate() {
+    this.props.setCurrentChallenges(this.props.user.username);
+  }
+
   render() {
     return (
-      <div>
-        <h1>Current Challenges</h1>
-        <p>{this.props.challenge.name}</p>
-        <Link href="/create_challenge">
-          <a>Create</a>
-        </Link>
+      <div className="current-challenges">
+        <div className="header">
+          <h2>Current Challenges</h2>
+        </div>
+        <div className="create-button">
+          <Link href="/create_challenge">
+            <a>+</a>
+          </Link>
+        </div>
+        <ChallengeList />
+        <style jsx>{ currentChallengesStyle }</style>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    fullname: state.auth.fullname,
-    username: state.auth.username,
-    challenge:  state.challenges.contest
-  };
+const mapStateToProps = state => ({
+  user: state.auth.user,
+});
+
+const mapDispatchToProps = {
+  setCurrentChallenges,
 };
 
-export default connect(mapStateToProps, {})(CurrentChallenges);
+export default connect(mapStateToProps, mapDispatchToProps)(CurrentChallenges);

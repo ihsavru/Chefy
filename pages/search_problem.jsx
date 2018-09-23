@@ -5,6 +5,7 @@ import Select from 'react-select';
 import _ from 'lodash';
 import ProblemList from '../components/problem_list';
 import { loadProblemsByCategory, loadProblemByCode, addProblem } from '../actions/create_challenge.js';
+import searchProblemStyle from '../styles/search_problem';
 
 class SearchProblem extends React.Component {
   constructor(props) {
@@ -58,18 +59,36 @@ class SearchProblem extends React.Component {
     ];
 
     return (
-      <div>
-        <h3>Search specific problem</h3>
-        <input name="contestCode" value={this.state.contestCode} placeholder="contest code" onChange={this.setContestCode} />
-        <input name="problemCode" value={this.state.problemCode} placeholder="problem code" onChange={this.setProblemCode} />
-        <span>OR</span>
-        <h3>Category</h3>
-        <Select value={this.state.problemCategory} options={categoriesList} onChange={this.setCategory} />
-        <button onClick={this.loadProblems}>GO</button>
-        <ProblemList problems={this.props.problems} onClick={this.props.addProblem} mode='add_problem' />
-        <Link href='/create_challenge'>
-          <a>Done</a>
-        </Link>
+      <div className='grid'>
+        <div className='search-problem'>
+          <div className='header'>
+            <h2>Search Problems</h2>
+          </div>
+          <div className='body'>
+            <div className='search-options'>
+              <div className='search-code'>
+                <h3>Search specific problem</h3>
+                <input name="contestCode" value={this.state.contestCode} placeholder="CONTEST CODE" onChange={this.setContestCode} />
+                <input name="problemCode" value={this.state.problemCode} placeholder="PROBLEM CODE" onChange={this.setProblemCode} />
+              </div>
+              <div className='search-btn-container'>
+                <h2>OR</h2>
+                <button onClick={this.loadProblems}>GO</button>
+              </div>
+              <div className='search-category'>
+                <h3>Category</h3>
+                <Select value={this.state.problemCategory} options={categoriesList} onChange={this.setCategory} />
+              </div>
+            </div>
+            <ProblemList problems={this.props.problems} onClick={this.props.addProblem} mode='add_problem' />
+            <Link href='/create_challenge'>
+              <div className='done-btn-container'>
+                <a className='done-btn'>Done</a>
+              </div>
+            </Link>
+          </div>
+        </div>
+        <style jsx>{ searchProblemStyle }</style>
       </div>
     );
   }

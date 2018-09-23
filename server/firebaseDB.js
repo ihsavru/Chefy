@@ -22,21 +22,50 @@ firebaseDB.post('/create_challenge', (req, res) => {
   const user = req.body.user;
   let challenges = [];
 
-  db.ref('/users/' + user).on('value', snapshot => {
-    challenges = (snapshot.val().challenges);
-  });
+  db.ref('users/' + user)
+    .once('value')
+    .then(snapshot => {
+      challenges = ((snapshot.val() && snapshot.val().challenges) || []);
+      challenges = _.concat(challenges, challenge);
 
-  challenges = _.concat(challenges, challenge);
+      db.ref('users/' + user)
+        .update({
+          challenges: challenges
+        })
+        .then(() => {
+          res.setHeader('Access-Control-Allow-Origin', '*');
+          res.setHeader('Content-Type', 'application/json');
+          res.json({ success: true });
+        })
+        .catch(error => {
+          console.log(error);
+          res.setHeader('Access-Control-Allow-Origin', '*');
+          res.setHeader('Content-Type', 'application/json');
+          res.json({
+            success: false,
+            error: error
+          });
+        })
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
 
-  db.ref('users/' + user).set({
-    challenges: challenges
-  })
-  .then(() => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({ success: 'true'}));
-    }
-  );
+firebaseDB.post('/fetch_challenges', (req, res) => {
+  const username = req.body.username;
+  let challenges = [];
+
+  db.ref('users/' + username).once('value')
+    .then(snapshot => {
+      challenges = ((snapshot.val() && snapshot.val().challenges) || []);
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Content-Type', 'application/json');
+      res.json({ challenges: challenges});
+    })
+    .catch(error => {
+      console.log(error);
+    });
 });
 
 module.exports = firebaseDB;

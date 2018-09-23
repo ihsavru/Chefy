@@ -8,7 +8,9 @@ class Navbar extends React.Component {
     return (
       <div className='navbar'>
         <div className='navbar-left'>
-          <span>CHEFY</span>
+          <Link href='/'>
+            <a>CHEFY</a>
+          </Link>
         </div>
         <div className='navbar-right'>
           <span>{this.props.user.fullname}</span>

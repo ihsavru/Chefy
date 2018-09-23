@@ -13,6 +13,16 @@ const globalStyle = css.global`
   width: 100%;
   height: 100%;
  }
+ 
+ button, input {
+  font-family: 'Oswald', sans-serif;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+ }
+ 
+ .grid {
+   display: grid;
+   grid-template-columns: 1fr 3fr 1fr;
 `;
 
 export default globalStyle;

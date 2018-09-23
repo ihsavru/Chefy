@@ -22,6 +22,7 @@ const authStyle = css`
   .auth a {
     background-color: #26a69a;
     color: #fff;
+    font-size: 20px;
     padding: 20px;
     text-decoration: none;
     border-radius: 6px;

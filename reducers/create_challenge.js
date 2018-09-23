@@ -49,6 +49,9 @@ const challenges = (state = initialState, action) => {
       };
       return newState;
     }
+    case CREATE_CHALLENGE: {
+      newState.contest = {};
+    }
     default:
       return newState;
   }
