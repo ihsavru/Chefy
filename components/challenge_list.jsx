@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import Countdown from 'react-countdown-now';
 import challengeListStyle from '../styles/challenge_list';
 import { startChallenge } from '../actions/current_challenges';
@@ -10,9 +11,9 @@ class ChallengeList extends React.Component {
   }
 
   render() {
-    let challengeList;
+    let ongoingChallenges = [], newChallenges = [], completedChallenges = [];
     if (this.props.challenges) {
-      challengeList = this.props.challenges.map((challenge) => {
+      _.forEach(this.props.challenges, (challenge) => {
         let startElement = (<button className="start-btn" onClick={() => this.startChallenge(challenge)}>Start</button>);
         if (challenge.endTime) {
           const renderer = ({ hours, minutes, seconds, completed }) => {
@@ -26,8 +27,9 @@ class ChallengeList extends React.Component {
             <Countdown date={challenge.endTime} renderer={renderer} />
           );
         }
+        let challengeElement;
         if (challenge) {
-          return (
+          challengeElement = (
             <div className="list-item">
               <div className="challenge">
                 <span>{ challenge.name }</span>
@@ -38,11 +40,25 @@ class ChallengeList extends React.Component {
             </div>
           );
         }
+
+        if (!challenge.endTime) {
+          newChallenges = _.concat(ongoingChallenges, challengeElement);
+        }
+
+        else if (Date.now() >= challenge.endTime) {
+          completedChallenges = _.concat(completedChallenges, challengeElement);
+        }
+
+        else if (Date.now() < challenge.endTime) {
+          ongoingChallenges = _.concat(ongoingChallenges, challengeElement);
+        }
       });
     }
     return (
       <div className="challenge-list">
-        {challengeList}
+        {ongoingChallenges}
+        {newChallenges}
+        {completedChallenges}
         <style jsx global>{ challengeListStyle }</style>
       </div>
     );
