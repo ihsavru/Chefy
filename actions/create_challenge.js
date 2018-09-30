@@ -51,6 +51,26 @@ export const loadProblemsByCategory = category => (dispatch) => {
     });
 };
 
+const fetchMoreProblems = (category, offset) => {
+  const promise = fetch(`https://api.codechef.com/problems/${category}?fields=problemName,problemCode,accuracy&limit=20&offset=${offset}`, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('access_token')}`,
+    },
+  });
+  return promise;
+};
+
+export const loadMoreProblems = (category, offset) => (dispatch) => {
+  fetchMoreProblems(category, offset)
+    .then(data => data.json())
+    .then((data) => {
+      dispatch({
+        type: GET_PROBLEMS_BY_CATEGORY,
+        payload: data,
+      });
+    });
+};
+
 export const addProblem = problem => (dispatch) => {
   dispatch({
     type: ADD_PROBLEM,

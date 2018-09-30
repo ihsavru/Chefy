@@ -1,6 +1,6 @@
 import css from 'styled-jsx/css';
 
-const searchProblemStyle = css`
+const searchProblemStyle = css.global`
   .search-problem {
     grid-column-start: 2;
   }
@@ -10,6 +10,8 @@ const searchProblemStyle = css`
     color: #fff;
     padding: 15px;
     margin-top: 50px;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
   }
   
   .search-problem .header h2 {
@@ -21,7 +23,7 @@ const searchProblemStyle = css`
     background-color: #fff;
     color: #464646;
     padding: 15px;
-    margin-top: 10px;
+    margin: 10px 0px 50px 0px;
   }
   
   .search-options {
@@ -63,8 +65,21 @@ const searchProblemStyle = css`
   }
   
   .done-btn-container {
-    text-align: center;
-    padding: 10px;
+    text-align: right;
+    padding: 5px;
+  }
+  
+  .see-more-btn {
+    font-size: 18px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  
+  .see-more-btn-container {
+    text-align: right;
+    padding: 5px;
   }
 `;
 

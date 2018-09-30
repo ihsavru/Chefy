@@ -30,7 +30,7 @@ const challenges = (state = initialState, action) => {
       return newState;
     }
     case GET_PROBLEMS_BY_CATEGORY: {
-      newState.problemList = _.cloneDeep(action.payload.result.data.content);
+      newState.problemList = _.concat(newState.problemList, action.payload.result.data.content);
       return newState;
     }
     case ADD_PROBLEM: {
@@ -50,7 +50,6 @@ const challenges = (state = initialState, action) => {
       return newState;
     }
     case UPDATE_CHALLENGE_NAME: {
-
       newState.contest = {
         ...newState.contest,
         name: action.payload,

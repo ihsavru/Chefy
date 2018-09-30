@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Select from 'react-select';
 import _ from 'lodash';
 import ProblemList from '../components/problem_list';
-import { loadProblemsByCategory, loadProblemByCode, addProblem } from '../actions/create_challenge.js';
+import { loadProblemsByCategory, loadProblemByCode, addProblem, loadMoreProblems } from '../actions/create_challenge.js';
 import searchProblemStyle from '../styles/search_problem';
 
 class SearchProblem extends React.Component {
@@ -48,6 +48,10 @@ class SearchProblem extends React.Component {
     }
   };
 
+  loadMoreProblems = () => {
+    this.props.loadMoreProblems(this.state.problemCategory.value, this.props.problems.length);
+  };
+
   render() {
     const categoriesList = [
       { value: 'school', label: 'School' },
@@ -58,11 +62,25 @@ class SearchProblem extends React.Component {
       { value: 'extcontest', label: 'ExtContest'}
     ];
 
+    let seeMoreButton;
+    if (this.props.problems.length > 0 && this.state.problemCategory) {
+      seeMoreButton = (
+        <div className='see-more-btn-container'>
+          <button className='see-more-btn' onClick={this.loadMoreProblems}>See More</button>
+        </div>
+      )
+    }
+
     return (
       <div className='grid'>
         <div className='search-problem'>
           <div className='header'>
             <h2>Search Problems</h2>
+            <Link href='/create_challenge'>
+              <div className='done-btn-container'>
+                <a className='done-btn'>Done</a>
+              </div>
+            </Link>
           </div>
           <div className='body'>
             <div className='search-options'>
@@ -81,14 +99,10 @@ class SearchProblem extends React.Component {
               </div>
             </div>
             <ProblemList problems={this.props.problems} onClick={this.props.addProblem} mode='add_problem' />
-            <Link href='/create_challenge'>
-              <div className='done-btn-container'>
-                <a className='done-btn'>Done</a>
-              </div>
-            </Link>
+            {seeMoreButton}
           </div>
         </div>
-        <style jsx>{ searchProblemStyle }</style>
+        <style jsx global>{ searchProblemStyle }</style>
       </div>
     );
   }
@@ -104,7 +118,8 @@ const mapDispatchToProps = dispatch => {
   return {
     loadProblemsByCategory: category => dispatch(loadProblemsByCategory(category)),
     loadProblemByCode: (contestCode, problemCode) => dispatch(loadProblemByCode(contestCode, problemCode)),
-    addProblem: problem => dispatch(addProblem(problem))
+    addProblem: problem => dispatch(addProblem(problem)),
+    loadMoreProblems: (category, offset) => dispatch(loadMoreProblems(category, offset)),
   }
 };
 
