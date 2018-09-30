@@ -68,4 +68,45 @@ firebaseDB.post('/fetch_challenges', (req, res) => {
     });
 });
 
+firebaseDB.post('/start_challenge', (req, res) => {
+  const username = req.body.username;
+  const newChallenge = req.body.challenge;
+  let challenges = [];
+
+  db.ref('users/' + username).once('value')
+    .then(snapshot => {
+      challenges = ((snapshot.val() && snapshot.val().challenges) || []);
+      _.forEach(challenges, challenge => {
+        if (challenge.name === newChallenge.name) {
+          challenge.endTime = newChallenge.endTime;
+        }
+      });
+
+      db.ref('users/' + username)
+        .update({
+          challenges: challenges
+        })
+        .then(() => {
+          res.setHeader('Access-Control-Allow-Origin', '*');
+          res.setHeader('Content-Type', 'application/json');
+          res.json({
+            success: true,
+            challenges: challenges
+          });
+        })
+        .catch(error => {
+          console.log(error);
+          res.setHeader('Access-Control-Allow-Origin', '*');
+          res.setHeader('Content-Type', 'application/json');
+          res.json({
+            success: false,
+            error: error
+          });
+        })
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
 module.exports = firebaseDB;

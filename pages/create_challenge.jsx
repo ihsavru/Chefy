@@ -2,16 +2,26 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Link from 'next/link';
 import ProblemList from '../components/problem_list';
-import { removeProblem, createChallenge, updateChallengeName } from "../actions/create_challenge";
+import { removeProblem, createChallenge, updateChallengeName, updateChallengeDuration } from "../actions/create_challenge";
 import createChallengeStyle from '../styles/create_challenge';
 
 class CreateChallenge extends React.Component {
-  updateChallengeName = event => {
+  updateChallengeName = (event) => {
     this.props.updateChallengeName(event.target.value);
   };
 
-  createChallenge = () => {
-    this.props.createChallenge(this.props.challenge, this.props.user.username);
+  updateChallengeDuration = (event) => {
+    this.props.updateChallengeDuration(event.target.name, event.target.value);
+  };
+
+  createChallenge = (event) => {
+    if (this.props.challenge.name.length > 0 && this.props.challenge.problems.length > 0) {
+      this.props.createChallenge(this.props.challenge, this.props.user.username);
+    }
+    else {
+      event.preventDefault();
+      alert("Please fill Challenge Name and problems");
+    }
   };
 
   render() {
@@ -25,9 +35,20 @@ class CreateChallenge extends React.Component {
             <div className='form'>
               <h3>NAME</h3>
               <h3>DURATION</h3>
-              <input type="text" name="challenge_title" placeholder='Challenge Name' value={this.props.challenge.name} onChange={this.updateChallengeName}/>
+              <input type="text" name="challenge_title" placeholder='Challenge Name' value={this.props.challenge.name} onChange={this.updateChallengeName} />
               <div className="input-duration">
-                <input type="time" />
+                <div>
+                  <span>DD</span><br/>
+                  <input type="number" name='days' min='0' value={this.props.challenge.duration.days} onChange={this.updateChallengeDuration} />
+                </div>
+                <div>
+                  <span>HH</span><br/>
+                  <input type="number" name='hours' min='0' value={this.props.challenge.duration.hours}  onChange={this.updateChallengeDuration} max='23' />
+                </div>
+                <div>
+                  <span>MM</span><br/>
+                  <input type="number" name='minutes' min='0' value={this.props.challenge.duration.minutes} onChange={this.updateChallengeDuration} max='59' />
+                </div>
               </div>
             </div>
             <ProblemList problems={this.props.challenge.problems} onClick={this.props.removeProblem} mode='remove_problem' />
@@ -61,8 +82,9 @@ const mapDispatchToProps = dispatch => {
   return {
     removeProblem: problem => dispatch(removeProblem(problem)),
     updateChallengeName: challengeName => dispatch(updateChallengeName(challengeName)),
-    createChallenge: (challenge, username) => dispatch(createChallenge(challenge, username))
-  }
+    createChallenge: (challenge, username) => dispatch(createChallenge(challenge, username)),
+    updateChallengeDuration: (target, value) => dispatch(updateChallengeDuration(target, value)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateChallenge);

@@ -6,12 +6,10 @@ import { setCurrentChallenges } from '../actions/current_challenges';
 import ChallengeList from './challenge_list';
 
 class CurrentChallenges extends React.Component {
-  componentDidMount() {
-    this.props.setCurrentChallenges(this.props.user.username);
-  }
-
   componentDidUpdate() {
-    this.props.setCurrentChallenges(this.props.user.username);
+    if (this.props.fetchChallenges) {
+      this.props.setCurrentChallenges(this.props.user.username);
+    }
   }
 
   render() {
@@ -34,6 +32,7 @@ class CurrentChallenges extends React.Component {
 
 const mapStateToProps = state => ({
   user: state.auth.user,
+  fetchChallenges: state.currentChallenges.fetchChallenges,
 });
 
 const mapDispatchToProps = {

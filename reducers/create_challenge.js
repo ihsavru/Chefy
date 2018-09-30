@@ -5,13 +5,20 @@ import {
   ADD_PROBLEM,
   REMOVE_PROBLEM,
   UPDATE_CHALLENGE_NAME,
-  CREATE_CHALLENGE,
+  UPDATE_CHALLENGE_DURATION,
 } from '../constants';
 
 const initialState = {
   problemList: [],
   contest: {
+    name: '',
+    duration: {
+      days: '00',
+      hours: '03',
+      minutes: '00',
+    },
     problems: [],
+    endTime: null,
   },
 };
 
@@ -43,14 +50,44 @@ const challenges = (state = initialState, action) => {
       return newState;
     }
     case UPDATE_CHALLENGE_NAME: {
+
       newState.contest = {
         ...newState.contest,
         name: action.payload,
       };
       return newState;
     }
-    case CREATE_CHALLENGE: {
-      newState.contest = {};
+    case UPDATE_CHALLENGE_DURATION: {
+      let value = action.payload.value;
+      if (action.payload.value.length === 1) {
+        value = `0${action.payload.value}`;
+      }
+      if (action.payload.target === 'days') {
+        newState.contest = {
+          ...newState.contest,
+          duration: {
+            ...newState.contest.duration,
+            days: value,
+          },
+        };
+      } else if (action.payload.target === 'hours') {
+        newState.contest = {
+          ...newState.contest,
+          duration: {
+            ...newState.contest.duration,
+            hours: value,
+          },
+        };
+      } else if (action.payload.target === 'minutes') {
+        newState.contest = {
+          ...newState.contest,
+          duration: {
+            ...newState.contest.duration,
+            minutes: value,
+          },
+        };
+      }
+      return newState;
     }
     default:
       return newState;

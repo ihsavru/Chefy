@@ -20,6 +20,10 @@ const globalStyle = css.global`
   border: 1px solid #ccc;
  }
  
+ button {
+  font-weight: 600;
+ }
+ 
  .grid {
    display: grid;
    grid-template-columns: 1fr 3fr 1fr;

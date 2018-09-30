@@ -31,19 +31,34 @@ const createChallengeStyle = css`
   }
   
   input {
-    padding: 10px;
+    padding: 8px;
     font-size: 18px;
-   }
+  }
   
+  input[type='text'] {
+    height: 30px;
+    margin-top: 20px;
+  }
   .form .input-duration{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
   }
   
-  .form .input-duration input[type="text"] {
-    width: 40px;
-    padding: 10px;
-    
+  .form .input-duration div {
+    text-align: center;
+    color: #ccc;
+    font-weight: 600;
+    font-size: 15px;
+  }
+  
+  .form .input-duration input[type="number"] {
+    padding: 8px;
+    width: 35px;
+    height: 30px;
+  }
+  
+  .form .input-duration span {
+    line-height: 20px;
   }
   
   .add-problem {  
