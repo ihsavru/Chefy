@@ -9,6 +9,7 @@ import {
   UPDATE_CHALLENGE_DURATION,
   CHALLENGE_CREATED,
   SET_PROBLEM_DETAILS,
+  CLEAR_PROBLEM_DETAILS,
 } from '../constants';
 
 const fetchProblemByCode = (contestCode, problemCode) => {
@@ -90,6 +91,12 @@ export const setProblemDetails = (problemCode, contestCode) => (dispatch) => {
         payload: data,
       });
     });
+};
+
+export const clearProblemDetails = () => (dispatch) => {
+  dispatch({
+    type: CLEAR_PROBLEM_DETAILS,
+  });
 };
 
 export const addProblem = problem => (dispatch) => {

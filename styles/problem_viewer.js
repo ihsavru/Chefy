@@ -1,6 +1,19 @@
 import css from 'styled-jsx/css';
 
-const problemViewerStyle = css`
+const problemViewerStyle = css.global`
+
+  .loader {
+    width: 100%;
+    height: 100vh;
+    text-align: center;
+  }
+  
+  .loader img {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
   .modal-header {
     display: grid;
     grid-template-columns: 5fr 1fr;
@@ -36,7 +49,18 @@ const problemViewerStyle = css`
     padding: 30px;
   }
   
+  .modal-footer .close-btn-container {
+    text-align: left;
+  }
+  
+  .modal-footer .add-btn-container {
+    text-align: right;
+    padding: 5px;
+  }
+  
   .modal-footer {
+    display: grid;
+    grid-template-columns: 5fr 1fr;
     padding: 10px;
     position: sticky;
     bottom: 0;

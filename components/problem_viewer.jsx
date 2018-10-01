@@ -14,6 +14,10 @@ class ProblemViewer extends React.Component {
     }
   };
 
+  addProblem = (event) => {
+    this.props.addProblem(event);
+  }
+
   render() {
     const customStyle = {
       content: {
@@ -30,6 +34,16 @@ class ProblemViewer extends React.Component {
       },
     };
 
+    let modalBody = (
+      <div className='loader'>
+        <img src='/static/loader.gif' />
+      </div>
+    );
+
+    if (!this.props.isFetchingDetails) {
+      modalBody = (<p dangerouslySetInnerHTML={{ __html: this.props.problemDetails.body }} />);
+    }
+
     return (
       <Modal
         isOpen={this.props.isModalOpen}
@@ -37,18 +51,23 @@ class ProblemViewer extends React.Component {
         style={customStyle}
       >
         <div className="modal-header">
-          <h2>{this.props.problemDetails.problemName}</h2>
+          <h2>{this.props.problem.problemName}</h2>
           <div className='close-btn-container'>
             <a onClick={this.props.closeModal}>X</a>
           </div>
         </div>
         <div className="modal-body">
-          <p dangerouslySetInnerHTML={{ __html: this.props.problemDetails.body }} />
+          {modalBody}
         </div>
         <div className="modal-footer">
-          <button onClick={this.props.closeModal}>Close</button>
+          <div className='close-btn-container'>
+            <button onClick={this.props.closeModal}>Close</button>
+          </div>
+          <div className='add-btn-container'>
+            <button onClick={this.addProblem}>ADD</button>
+          </div>
         </div>
-        <style jsx>{ problemViewerStyle }</style>
+        <style jsx global>{ problemViewerStyle }</style>
       </Modal>
     );
   }
@@ -57,11 +76,12 @@ class ProblemViewer extends React.Component {
 const mapStateToProps = state => {
   return {
     problemDetails: state.challenges.problemDetails,
+    isFetchingDetails: state.challenges.isFetchingDetails,
   }
 };
 
 const mapDispatchToProps = {
-  setProblemDetails,
+  setProblemDetails
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProblemViewer);

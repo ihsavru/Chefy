@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import ProblemViewer from './problem_viewer';
+import { clearProblemDetails } from '../actions/create_challenge';
 
 class Problem extends React.Component {
   constructor(props) {
@@ -15,6 +17,7 @@ class Problem extends React.Component {
 
   closeModal = () => {
     this.setState({ isModalOpen: false });
+    this.props.clearProblemDetails();
   };
 
   handleClick = (event) => {
@@ -31,7 +34,12 @@ class Problem extends React.Component {
     }
     if(this.state.isModalOpen) {
       return (
-        <ProblemViewer problem={this.props.problem} closeModal={this.closeModal} problemDetails={this.props.problemDetails} isModalOpen={this.state.isModalOpen}/>
+        <ProblemViewer
+          problem={this.props.problem}
+          closeModal={this.closeModal}
+          isModalOpen={this.state.isModalOpen}
+          addProblem={this.handleClick}
+        />
       );
     }
 
@@ -54,4 +62,8 @@ class Problem extends React.Component {
   }
 }
 
-export default (Problem);
+const mapDispatchToProps = {
+  clearProblemDetails,
+};
+
+export default connect(null, mapDispatchToProps)(Problem);
