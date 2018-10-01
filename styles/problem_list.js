@@ -9,7 +9,12 @@ const problemListStyle = css.global`
     margin: 10px 0px;
     padding: 20px;
     display: grid;
+    cursor: pointer;
     grid-template-columns: 4fr 1fr;
+  }
+  
+  .list-item:hover {
+    box-shadow: 0 0 8px #b9b9b9;
   }
   
   .problem-name {
@@ -21,6 +26,10 @@ const problemListStyle = css.global`
     font-weight: 600;
     color: #ccc;
     margin: 0px 15px;
+  }
+  
+  .problem-accuracy {
+    color: #26a69a;
   }
   
   .btn-container {

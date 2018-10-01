@@ -6,6 +6,7 @@ import {
   REMOVE_PROBLEM,
   UPDATE_CHALLENGE_NAME,
   UPDATE_CHALLENGE_DURATION,
+  SET_PROBLEM_DETAILS,
 } from '../constants';
 
 const initialState = {
@@ -20,6 +21,7 @@ const initialState = {
     problems: [],
     endTime: null,
   },
+  problemDetails: {},
 };
 
 const challenges = (state = initialState, action) => {
@@ -47,6 +49,10 @@ const challenges = (state = initialState, action) => {
         ...newState.contest,
         problems: newProblems,
       };
+      return newState;
+    }
+    case SET_PROBLEM_DETAILS: {
+      newState.problemDetails = _.cloneDeep(action.payload.result.data.content);
       return newState;
     }
     case UPDATE_CHALLENGE_NAME: {

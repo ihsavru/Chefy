@@ -12,6 +12,12 @@ class CurrentChallenges extends React.Component {
     }
   }
 
+  componentDidMount() {
+    if (this.props.user.username) {
+      this.props.setCurrentChallenges(this.props.user.username);
+    }
+  }
+
   render() {
     return (
       <div className="current-challenges">

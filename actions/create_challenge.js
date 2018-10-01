@@ -8,6 +8,7 @@ import {
   UPDATE_CHALLENGE_NAME,
   UPDATE_CHALLENGE_DURATION,
   CHALLENGE_CREATED,
+  SET_PROBLEM_DETAILS,
 } from '../constants';
 
 const fetchProblemByCode = (contestCode, problemCode) => {
@@ -66,6 +67,26 @@ export const loadMoreProblems = (category, offset) => (dispatch) => {
     .then((data) => {
       dispatch({
         type: GET_PROBLEMS_BY_CATEGORY,
+        payload: data,
+      });
+    });
+};
+
+const fetchProblemDetails = (problemCode, contestCode = 'PRACTICE') => {
+  const promise = fetch(`https://api.codechef.com/contests/${contestCode}/problems/${problemCode}`, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('access_token')}`,
+    },
+  });
+  return promise;
+};
+
+export const setProblemDetails = (problemCode, contestCode) => (dispatch) => {
+  fetchProblemDetails(problemCode, contestCode)
+    .then(data => data.json())
+    .then((data) => {
+      dispatch({
+        type: SET_PROBLEM_DETAILS,
         payload: data,
       });
     });

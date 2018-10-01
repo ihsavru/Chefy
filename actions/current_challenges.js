@@ -29,13 +29,13 @@ export const setCurrentChallenges = username => (dispatch) => {
 };
 
 const postStartTime = (challenge, username) => {
-  let newChallenge = { ...challenge };
+  const newChallenge = { ...challenge };
   let seconds = newChallenge.duration.days * 24 * 60 * 60;
   seconds += newChallenge.duration.hours * 60 * 60;
   seconds += newChallenge.duration.minutes * 60;
   newChallenge.endTime = Date.now() + seconds * 1000;
   const data = {
-    username: username,
+    username,
     challenge: newChallenge,
   };
   const promise = fetch('/firebase/start_challenge', {

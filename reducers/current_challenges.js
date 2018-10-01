@@ -10,7 +10,7 @@ const currentChallenges = (state = initialState, action) => {
   const newState = { ...state };
   switch (action.type) {
     case SET_CURRENT_CHALLENGES: {
-      let challenges = _.cloneDeep(action.payload.challenges);
+      const challenges = _.cloneDeep(action.payload.challenges);
       _.reverse(challenges);
       newState.challenges = challenges;
       newState.fetchChallenges = false;
