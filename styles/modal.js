@@ -1,6 +1,6 @@
 import css from 'styled-jsx/css';
 
-const problemViewerStyle = css.global`
+const modalStyle = css.global`
 
   .loader {
     width: 100%;
@@ -78,4 +78,4 @@ const problemViewerStyle = css.global`
   
 `;
 
-export default problemViewerStyle;
+export default modalStyle;

@@ -7,7 +7,7 @@ class Problem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sModalOpen: false,
+      isModalOpen: false,
     }
   };
 
@@ -26,11 +26,19 @@ class Problem extends React.Component {
   };
 
   render() {
-    let buttonName;
+    let button;
     if (this.props.mode === 'add_problem') {
-      buttonName = 'Add';
+      button = (
+        <div className="btn-container">
+          <button className="toggle-btn" onClick={this.handleClick}>ADD</button>
+        </div>
+      );
     } else if (this.props.mode === 'remove_problem') {
-      buttonName = 'Remove';
+      button = (
+        <div className="btn-container">
+          <button className="toggle-btn" onClick={this.handleClick}>REMOVE</button>
+        </div>
+      );
     }
     if(this.state.isModalOpen) {
       return (
@@ -52,9 +60,7 @@ class Problem extends React.Component {
               <span className="problem-code">{ this.props.problem.problemCode }</span>
               <span className="problem-accuracy">{ this.props.problem.accuracy.toFixed(2) }</span>
             </div>
-            <div className="btn-container">
-              <button className="toggle-btn" onClick={this.handleClick}>{buttonName}</button>
-            </div>
+            {button}
           </div>
         </div>
       )

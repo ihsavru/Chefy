@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
 import { setProblemDetails } from '../actions/create_challenge';
-import problemViewerStyle from '../styles/problem_viewer';
+import modalStyle from '../styles/modal';
 
 class ProblemViewer extends React.Component {
   componentDidMount() {
@@ -67,7 +67,7 @@ class ProblemViewer extends React.Component {
             <button onClick={this.addProblem}>ADD</button>
           </div>
         </div>
-        <style jsx global>{ problemViewerStyle }</style>
+        <style jsx global>{ modalStyle }</style>
       </Modal>
     );
   }
