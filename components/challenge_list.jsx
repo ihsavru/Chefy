@@ -16,7 +16,7 @@ class ChallengeList extends React.Component {
     if (this.props.challenges) {
       _.forEach(this.props.challenges, (challenge) => {
         const challengeElement = (
-          <Challenge challenge={challenge} startChallenge={this.startChallenge} />
+          <Challenge challenge={challenge} startChallenge={this.startChallenge} key={challenge.id} />
         );
         if (!challenge.endTime) {
           newChallenges = _.concat(ongoingChallenges, challengeElement);

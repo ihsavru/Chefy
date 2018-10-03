@@ -7,7 +7,12 @@ class ProblemList extends React.Component {
     let problems;
     if (this.props.problems) {
       problems = this.props.problems.map(problem => (
-        <Problem onClick={this.props.onClick} problem={problem} mode={this.props.mode} />
+        <Problem
+          onClick={this.props.onClick}
+          problem={problem}
+          mode={this.props.mode}
+          key={problem.problemCode}
+        />
       ));
     }
 

@@ -1,5 +1,6 @@
 import fetch from 'cross-fetch';
 import Cookies from 'js-cookie';
+import shortid from 'shortid';
 import {
   API_FAIL,
   GET_PROBLEMS_BY_CODE,
@@ -132,6 +133,7 @@ export const updateChallengeDuration = (target, value) => (dispatch) => {
 };
 
 const postChallenge = (challenge, username) => {
+  challenge.id  = shortid.generate();
   const data = {
     challenge,
     user: username,

@@ -4,6 +4,9 @@ import modalStyle from '../styles/modal';
 import ProblemList from './problem_list';
 
 class ChallengeViewer extends React.Component {
+  componentWillMount() {
+    Modal.setAppElement('body');
+  };
 
   render() {
     const customStyle = {
