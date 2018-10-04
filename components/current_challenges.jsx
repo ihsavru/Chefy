@@ -19,6 +19,17 @@ class CurrentChallenges extends React.Component {
   }
 
   render() {
+    let element;
+    if (this.props.fetchChallenges) {
+      element = (
+        <div class='loader'>
+          <img src='/static/loader.gif' />
+        </div>
+      )
+    }
+    else {
+      element = <ChallengeList />;
+    }
     return (
       <div className="current-challenges">
         <div className="header">
@@ -29,8 +40,8 @@ class CurrentChallenges extends React.Component {
             <a>+</a>
           </Link>
         </div>
-        <ChallengeList />
-        <style jsx>{ currentChallengesStyle }</style>
+        {element}
+        <style jsx global>{ currentChallengesStyle }</style>
       </div>
     );
   }

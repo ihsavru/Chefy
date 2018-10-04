@@ -5,7 +5,7 @@ import Problem from './problem';
 class ProblemList extends React.Component {
   render() {
     let problems;
-    if (this.props.problems) {
+    if (this.props.problems.length > 0) {
       problems = this.props.problems.map(problem => (
         <Problem
           onClick={this.props.onClick}

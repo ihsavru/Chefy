@@ -5,6 +5,12 @@ const searchProblemStyle = css.global`
     grid-column-start: 2;
   }
   
+  .loader {
+    width: 100%;
+    text-align: center;
+    margin-top: 50px;
+  }
+  
   .search-problem .header {
     background-color: #26a69a;
     color: #fff;

@@ -19,7 +19,7 @@ class ChallengeList extends React.Component {
           <Challenge challenge={challenge} startChallenge={this.startChallenge} key={challenge.id} />
         );
         if (!challenge.endTime) {
-          newChallenges = _.concat(ongoingChallenges, challengeElement);
+          newChallenges = _.concat(newChallenges, challengeElement);
         } else if (Date.now() >= challenge.endTime) {
           completedChallenges = _.concat(completedChallenges, challengeElement);
         } else if (Date.now() < challenge.endTime) {

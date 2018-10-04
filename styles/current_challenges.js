@@ -1,8 +1,14 @@
 import css from 'styled-jsx/css';
 
-const currentChallengesStyle = css`
+const currentChallengesStyle = css.global`
   .current-challenges {
     grid-column-start: 2;
+  }
+  
+  .loader {
+    width: 100%;
+    text-align: center;
+    margin-top: 50px;
   }
   
   .current-challenges .header {

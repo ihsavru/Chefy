@@ -11,6 +11,8 @@ import {
   CHALLENGE_CREATED,
   SET_PROBLEM_DETAILS,
   CLEAR_PROBLEM_DETAILS,
+  SET_MORE_PROBLEMS,
+  CLEAR_PROBLEM_LIST,
 } from '../constants';
 
 const fetchProblemByCode = (contestCode, problemCode) => {
@@ -68,10 +70,16 @@ export const loadMoreProblems = (category, offset) => (dispatch) => {
     .then(data => data.json())
     .then((data) => {
       dispatch({
-        type: GET_PROBLEMS_BY_CATEGORY,
+        type: SET_MORE_PROBLEMS,
         payload: data,
       });
     });
+};
+
+export const clearProblemList = () => (dispatch) => {
+  dispatch({
+    type: CLEAR_PROBLEM_LIST,
+  });
 };
 
 const fetchProblemDetails = (problemCode, contestCode = 'PRACTICE') => {

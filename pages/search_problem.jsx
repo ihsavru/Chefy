@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Select from 'react-select';
 import _ from 'lodash';
 import ProblemList from '../components/problem_list';
-import { loadProblemsByCategory, loadProblemByCode, addProblem, loadMoreProblems } from '../actions/create_challenge.js';
+import { loadProblemsByCategory, loadProblemByCode, addProblem, loadMoreProblems, clearProblemList } from '../actions/create_challenge.js';
 import searchProblemStyle from '../styles/search_problem';
 
 class SearchProblem extends React.Component {
@@ -13,9 +13,16 @@ class SearchProblem extends React.Component {
     this.state = {
       contestCode: '',
       problemCode: '',
-      problemCategory: null
+      problemCategory: null,
+      isFetchingProblems: false,
     }
   };
+
+  componentDidUpdate() {
+    if (this.props.problems.length > 0 && this.state.isFetchingProblems) {
+      this.setState({ isFetchingProblems: false});
+    }
+  }
 
   setContestCode = event => {
     this.setState({
@@ -40,6 +47,7 @@ class SearchProblem extends React.Component {
   };
 
   loadProblems = () => {
+    this.setState({ isFetchingProblems: true });
     if (this.state.problemCategory) {
       this.props.loadProblemsByCategory(this.state.problemCategory.value);
     }
@@ -71,6 +79,15 @@ class SearchProblem extends React.Component {
       )
     }
 
+    let loader;
+    if (this.state.isFetchingProblems) {
+      loader = (
+        <div className='loader'>
+          <img src='/static/loader.gif' />
+        </div>
+      );
+    }
+
     return (
       <div className='grid'>
         <div className='search-problem'>
@@ -78,7 +95,7 @@ class SearchProblem extends React.Component {
             <h2>Search Problems</h2>
             <Link href='/create_challenge'>
               <div className='done-btn-container'>
-                <a className='done-btn'>Done</a>
+                <a className='done-btn' onClick={() => this.props.clearProblemList()}>Done</a>
               </div>
             </Link>
           </div>
@@ -99,6 +116,7 @@ class SearchProblem extends React.Component {
               </div>
             </div>
             <ProblemList problems={this.props.problems} onClick={this.props.addProblem} mode='add_problem' />
+            {loader}
             {seeMoreButton}
           </div>
         </div>
@@ -110,7 +128,7 @@ class SearchProblem extends React.Component {
 
 const mapStateToProps = state => {
     return {
-      problems: state.challenges.problemList
+      problems: state.challenges.problemList,
     }
 };
 
@@ -120,6 +138,7 @@ const mapDispatchToProps = dispatch => {
     loadProblemByCode: (contestCode, problemCode) => dispatch(loadProblemByCode(contestCode, problemCode)),
     addProblem: problem => dispatch(addProblem(problem)),
     loadMoreProblems: (category, offset) => dispatch(loadMoreProblems(category, offset)),
+    clearProblemList: () => dispatch(clearProblemList()),
   }
 };
 

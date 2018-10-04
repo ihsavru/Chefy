@@ -8,6 +8,9 @@ import {
   UPDATE_CHALLENGE_DURATION,
   SET_PROBLEM_DETAILS,
   CLEAR_PROBLEM_DETAILS,
+  SET_MORE_PROBLEMS,
+  CLEAR_PROBLEM_LIST,
+  CHALLENGE_CREATED,
 } from '../constants';
 
 const initialState = {
@@ -34,6 +37,10 @@ const challenges = (state = initialState, action) => {
       return newState;
     }
     case GET_PROBLEMS_BY_CATEGORY: {
+      newState.problemList = _.cloneDeep(action.payload.result.data.content);
+      return newState;
+    }
+    case SET_MORE_PROBLEMS: {
       newState.problemList = _.concat(newState.problemList, action.payload.result.data.content);
       return newState;
     }
@@ -51,6 +58,10 @@ const challenges = (state = initialState, action) => {
         ...newState.contest,
         problems: newProblems,
       };
+      return newState;
+    }
+    case CLEAR_PROBLEM_LIST: {
+      newState.problemList = {};
       return newState;
     }
     case SET_PROBLEM_DETAILS: {
@@ -100,6 +111,19 @@ const challenges = (state = initialState, action) => {
           },
         };
       }
+      return newState;
+    }
+    case CHALLENGE_CREATED: {
+      newState.contest = {
+        name: '',
+        duration: {
+          days: '00',
+          hours: '03',
+          minutes: '00',
+        },
+        problems: [],
+        endTime: null,
+      };
       return newState;
     }
     default:
