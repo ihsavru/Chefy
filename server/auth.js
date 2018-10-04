@@ -96,7 +96,7 @@ auth.get('/callback', (req, res) => {
 
 auth.post('/token', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  const refreshToken = req.body ? req.body.refresh_token : null;
+  const refreshToken = req.cookies ? req.cookies['refresh_token'] : null;
   if (refreshToken) {
     const authOptions = {
       url: 'https://api.codechef.com/oauth/token',
@@ -113,9 +113,11 @@ auth.post('/token', (req, res) => {
     };
     request.post(authOptions, (error, response, body) => {
       if (!error && response.statusCode === 200) {
-        const access_token = body.access_token; const
-          expires_in = body.expires_in;
-
+        const access_token = body.result.data.access_token;
+        const expires_in = body.result.data.expires_in;
+        res.cookie('access_token', access_token, {
+          maxAge: 3600 * 1000
+        });
         res.setHeader('Content-Type', 'application/json');
         res.send(
           JSON.stringify({

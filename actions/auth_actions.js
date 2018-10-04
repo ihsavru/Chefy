@@ -26,3 +26,15 @@ export const setUser = tokens => dispatch => (
     })
     .catch(response => (dispatch({ type: API_FAIL, data: response })))
 );
+
+
+export const refreshToken = () => {
+  const promise = fetch('/auth/token', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  });
+  return promise;
+}

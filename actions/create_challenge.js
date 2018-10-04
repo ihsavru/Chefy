@@ -1,6 +1,7 @@
 import fetch from 'cross-fetch';
 import Cookies from 'js-cookie';
 import shortid from 'shortid';
+import { refreshToken } from './auth_actions';
 import {
   API_FAIL,
   GET_PROBLEMS_BY_CODE,
@@ -13,6 +14,7 @@ import {
   CLEAR_PROBLEM_DETAILS,
   SET_MORE_PROBLEMS,
   CLEAR_PROBLEM_LIST,
+  REFRESH_ACCESS_TOKEN
 } from '../constants';
 
 const fetchProblemByCode = (contestCode, problemCode) => {
@@ -53,7 +55,8 @@ export const loadProblemsByCategory = category => (dispatch) => {
         type: GET_PROBLEMS_BY_CATEGORY,
         payload: data,
       });
-    });
+    })
+    .catch(response => (dispatch({ type: API_FAIL, data: response })));
 };
 
 const fetchMoreProblems = (category, offset) => {
@@ -73,7 +76,8 @@ export const loadMoreProblems = (category, offset) => (dispatch) => {
         type: SET_MORE_PROBLEMS,
         payload: data,
       });
-    });
+    })
+    .catch(response => (dispatch({ type: API_FAIL, data: response })));
 };
 
 export const clearProblemList = () => (dispatch) => {
@@ -95,11 +99,23 @@ export const setProblemDetails = (problemCode, contestCode) => (dispatch) => {
   fetchProblemDetails(problemCode, contestCode)
     .then(data => data.json())
     .then((data) => {
-      dispatch({
-        type: SET_PROBLEM_DETAILS,
-        payload: data,
-      });
-    });
+      if (data.status === 'OK') {
+        dispatch({
+          type: SET_PROBLEM_DETAILS,
+          payload: data,
+        });
+      } else if (data.result.errors[0].code === 'unauthorized') {
+        refreshToken()
+          .then(data => data.json())
+          .then((data) => {
+            dispatch({
+              type: REFRESH_ACCESS_TOKEN,
+              payload: data,
+            });
+          });
+      }
+    })
+    .catch(response => (dispatch({ type: API_FAIL, data: response })));
 };
 
 export const clearProblemDetails = () => (dispatch) => {
@@ -141,7 +157,7 @@ export const updateChallengeDuration = (target, value) => (dispatch) => {
 };
 
 const postChallenge = (challenge, username) => {
-  challenge.id  = shortid.generate();
+  challenge.id = shortid.generate();
   const data = {
     challenge,
     user: username,

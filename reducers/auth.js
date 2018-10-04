@@ -1,4 +1,4 @@
-import { SET_TOKENS, SET_USER } from '../constants';
+import { REFRESH_ACCESS_TOKEN, SET_TOKENS, SET_USER } from '../constants';
 
 const initialState = {
   access_token: null,
@@ -23,6 +23,10 @@ const auth = (state = initialState, action) => {
         fullname: action.payload.result.data.content.fullname,
         username: action.payload.result.data.content.username,
       };
+      return newState;
+    }
+    case REFRESH_ACCESS_TOKEN: {
+      newState.access_token = action.payload.access_token;
       return newState;
     }
     default:
