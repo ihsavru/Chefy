@@ -26,6 +26,12 @@ class Problem extends React.Component {
   };
 
   render() {
+    let problemAccuracy;
+
+    if (this.props.problem.accuracy) {
+      problemAccuracy = this.props.problem.accuracy.toFixed(2);
+    }
+
     let button;
     if (this.props.mode === 'add_problem') {
       button = (
@@ -58,7 +64,7 @@ class Problem extends React.Component {
             <div>
               <span className="problem-name" key={ this.props.problem.problemCode }>{ this.props.problem.problemName }</span>
               <span className="problem-code">{ this.props.problem.problemCode }</span>
-              <span className="problem-accuracy">{ this.props.problem.accuracy.toFixed(2) }</span>
+              <span className="problem-accuracy">{ problemAccuracy }</span>
             </div>
             {button}
           </div>

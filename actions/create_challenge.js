@@ -15,63 +15,47 @@ import {
   CLEAR_PROBLEM_DETAILS,
   SET_MORE_PROBLEMS,
   CLEAR_PROBLEM_LIST,
-  REFRESH_ACCESS_TOKEN,
 } from '../constants';
 
-const fetchProblemByCode = (contestCode, problemCode) => {
-  const promise = fetch(`https://api.codechef.com/contests/${contestCode}/problems/${problemCode}?fields=body`, {
+export const loadProblemByCode = (contestCode, problemCode) => (dispatch) => {
+  api.get(`contests/${contestCode}/problems/${problemCode}?fields=body`, {
     headers: {
       Authorization: `Bearer ${Cookies.get('access_token')}`,
     },
-  });
-  return promise;
-};
-
-export const loadProblemByCode = (contestCode, problemCode) => (dispatch) => {
-  fetchProblemByCode(contestCode, problemCode)
-    .then(data => data.json())
-    .then((data) => {
+  })
+    .then((res) => {
       dispatch({
         type: GET_PROBLEMS_BY_CODE,
-        payload: data,
+        payload: res.data,
       });
     })
-    .catch(response => (dispatch({ type: API_FAIL, data: response })));
-};
-
-const fetchProblemsByCategory = (category) => {
-  const promise = fetch(`https://api.codechef.com/problems/${category}?fields=problemName,problemCode,accuracy&limit=20`, {
-    headers: {
-      Authorization: `Bearer ${Cookies.get('access_token')}`,
-    },
-  });
-  return promise;
+    .catch(error => {
+      console.log(error);
+      (dispatch({ type: API_FAIL, payload: error }));
+    });
 };
 
 export const loadProblemsByCategory = category => (dispatch) => {
-  fetchProblemsByCategory(category)
-    .then(data => data.json())
-    .then((data) => {
-      dispatch({
-        type: GET_PROBLEMS_BY_CATEGORY,
-        payload: data,
-      });
-    })
-    .catch(response => (dispatch({ type: API_FAIL, data: response })));
-};
-
-const fetchMoreProblems = (category, offset) => {
-  const promise = fetch(`https://api.codechef.com/problems/${category}?fields=problemName,problemCode,accuracy&limit=20&offset=${offset}`, {
+  api.get(`problems/${category}?fields=problemName,problemCode,accuracy&limit=20`, {
     headers: {
       Authorization: `Bearer ${Cookies.get('access_token')}`,
     },
-  });
-  return promise;
+  })
+    .then((res) => {
+      dispatch({
+        type: GET_PROBLEMS_BY_CATEGORY,
+        payload: res.data,
+      });
+    })
+    .catch(error => (dispatch({ type: API_FAIL, data: error })));
 };
 
 export const loadMoreProblems = (category, offset) => (dispatch) => {
-  fetchMoreProblems(category, offset)
-    .then(data => data.json())
+  api.get(`problems/${category}?fields=problemName,problemCode,accuracy&limit=20&offset=${offset}`, {
+    headers: {
+      Authorization: `Bearer ${Cookies.get('access_token')}`,
+    },
+  })
     .then((data) => {
       dispatch({
         type: SET_MORE_PROBLEMS,

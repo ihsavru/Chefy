@@ -5,6 +5,10 @@ import { setProblemDetails } from '../actions/create_challenge';
 import modalStyle from '../styles/modal';
 
 class ProblemViewer extends React.Component {
+  componentWillMount() {
+    Modal.setAppElement('body');
+  };
+
   componentDidMount() {
     if (this.props.problem.contestCode) {
       this.props.setProblemDetails(this.props.problem.problemCode, this.props.problem.contestCode);
