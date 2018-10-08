@@ -1,7 +1,8 @@
 import fetch from 'cross-fetch';
 import Cookies from 'js-cookie';
 import shortid from 'shortid';
-import { refreshToken } from './auth_actions';
+import axios from 'axios';
+import api from '../utils/api_utils';
 import {
   API_FAIL,
   GET_PROBLEMS_BY_CODE,
@@ -14,7 +15,7 @@ import {
   CLEAR_PROBLEM_DETAILS,
   SET_MORE_PROBLEMS,
   CLEAR_PROBLEM_LIST,
-  REFRESH_ACCESS_TOKEN
+  REFRESH_ACCESS_TOKEN,
 } from '../constants';
 
 const fetchProblemByCode = (contestCode, problemCode) => {
@@ -86,36 +87,19 @@ export const clearProblemList = () => (dispatch) => {
   });
 };
 
-const fetchProblemDetails = (problemCode, contestCode = 'PRACTICE') => {
-  const promise = fetch(`https://api.codechef.com/contests/${contestCode}/problems/${problemCode}`, {
+export const setProblemDetails = (problemCode, contestCode = 'PRACTICE') => (dispatch) => {
+  api.get(`contests/${contestCode}/problems/${problemCode}`, {
     headers: {
       Authorization: `Bearer ${Cookies.get('access_token')}`,
     },
-  });
-  return promise;
-};
-
-export const setProblemDetails = (problemCode, contestCode) => (dispatch) => {
-  fetchProblemDetails(problemCode, contestCode)
-    .then(data => data.json())
-    .then((data) => {
-      if (data.status === 'OK') {
-        dispatch({
-          type: SET_PROBLEM_DETAILS,
-          payload: data,
-        });
-      } else if (data.result.errors[0].code === 'unauthorized') {
-        refreshToken()
-          .then(data => data.json())
-          .then((data) => {
-            dispatch({
-              type: REFRESH_ACCESS_TOKEN,
-              payload: data,
-            });
-          });
-      }
+  })
+    .then((res) => {
+      dispatch({
+        type: SET_PROBLEM_DETAILS,
+        payload: res.data,
+      });
     })
-    .catch(response => (dispatch({ type: API_FAIL, data: response })));
+    .catch(error => (dispatch({ type: API_FAIL, payload: error })));
 };
 
 export const clearProblemDetails = () => (dispatch) => {

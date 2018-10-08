@@ -114,25 +114,29 @@ auth.post('/token', (req, res) => {
     request.post(authOptions, (error, response, body) => {
       if (!error && response.statusCode === 200) {
         const access_token = body.result.data.access_token;
+        const refresh_token = body.result.data.refresh_token;
         const expires_in = body.result.data.expires_in;
         res.cookie('access_token', access_token, {
           maxAge: 3600 * 1000
         });
+        res.cookie('refresh_token', refresh_token);
         res.setHeader('Content-Type', 'application/json');
         res.send(
           JSON.stringify({
             access_token,
             expires_in,
+            refresh_token,
           }),
         );
       } else {
+        console.log("Error:", error);
         res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify({ access_token: '', expires_in: '' }));
+        res.send(JSON.stringify({ success: false }));
       }
     });
   } else {
     res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({ access_token: '', expires_in: '' }));
+    res.send(JSON.stringify({ success: false }));
   }
 });
 
