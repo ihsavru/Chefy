@@ -1,4 +1,3 @@
-import fetch from 'cross-fetch';
 import Cookies from 'js-cookie';
 import shortid from 'shortid';
 import axios from 'axios';
@@ -29,7 +28,7 @@ export const loadProblemByCode = (contestCode, problemCode) => (dispatch) => {
         payload: res.data,
       });
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
       (dispatch({ type: API_FAIL, payload: error }));
     });
@@ -56,10 +55,10 @@ export const loadMoreProblems = (category, offset) => (dispatch) => {
       Authorization: `Bearer ${Cookies.get('access_token')}`,
     },
   })
-    .then((data) => {
+    .then((res) => {
       dispatch({
         type: SET_MORE_PROBLEMS,
-        payload: data,
+        payload: res.data,
       });
     })
     .catch(response => (dispatch({ type: API_FAIL, data: response })));
@@ -131,13 +130,11 @@ const postChallenge = (challenge, username) => {
     user: username,
   };
 
-  const promise = fetch('/firebase/create_challenge', {
-    method: 'POST',
+  const promise = axios.post('/firebase/create_challenge', data, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(data),
   });
   return promise;
 };

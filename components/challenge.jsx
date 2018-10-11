@@ -22,7 +22,7 @@ class Challenge extends React.Component {
     let startElement = (
       <button
         className="start-btn"
-        onClick={() => this.props.startChallenge(this.props.challenge)}
+        onClick={(event) => this.props.startChallenge(event, this.props.challenge)}
       >
         Start
       </button>

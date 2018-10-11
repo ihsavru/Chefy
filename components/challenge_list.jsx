@@ -6,9 +6,10 @@ import { startChallenge } from '../actions/current_challenges';
 import Challenge from './challenge';
 
 class ChallengeList extends React.Component {
-  startChallenge = (challenge) => {
+  startChallenge = (event, challenge) => {
     this.props.startChallenge(challenge, this.props.user.username);
-  }
+    event.stopPropagation();
+  };
 
   render() {
     let ongoingChallenges = []; let newChallenges = []; let

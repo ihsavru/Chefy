@@ -1,28 +1,25 @@
-import fetch from 'cross-fetch';
+import axios from 'axios';
 import { API_FAIL, SET_CURRENT_CHALLENGES, START_CHALLENGE } from '../constants';
 
 const fetchCurrentChallenges = (username) => {
   const data = {
     username,
   };
-  const promise = fetch('/firebase/fetch_challenges', {
-    method: 'POST',
+  const promise = axios.post('/firebase/fetch_challenges', data, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(data),
   });
   return promise;
 };
 
 export const setCurrentChallenges = username => (dispatch) => {
   fetchCurrentChallenges(username)
-    .then(data => data.json())
-    .then((data) => {
+    .then((res) => {
       dispatch({
         type: SET_CURRENT_CHALLENGES,
-        payload: data,
+        payload: res.data,
       });
     })
     .catch(response => (dispatch({ type: API_FAIL, data: response })));
@@ -30,6 +27,7 @@ export const setCurrentChallenges = username => (dispatch) => {
 
 const postStartTime = (challenge, username) => {
   const newChallenge = { ...challenge };
+  console.log(challenge);
   let seconds = newChallenge.duration.days * 24 * 60 * 60;
   seconds += newChallenge.duration.hours * 60 * 60;
   seconds += newChallenge.duration.minutes * 60;
@@ -38,24 +36,21 @@ const postStartTime = (challenge, username) => {
     username,
     challenge: newChallenge,
   };
-  const promise = fetch('/firebase/start_challenge', {
-    method: 'POST',
+  const promise = axios.post('/firebase/start_challenge', data, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(data),
   });
   return promise;
 };
 
 export const startChallenge = (challenge, username) => (dispatch) => {
   postStartTime(challenge, username)
-    .then(data => data.json())
-    .then((data) => {
+    .then((res) => {
       dispatch({
         type: START_CHALLENGE,
-        payload: data,
+        payload: res.data,
       });
     });
 };
